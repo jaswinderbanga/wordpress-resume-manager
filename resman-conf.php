@@ -26,7 +26,7 @@ function resman_admin_header() {
 <script type="text/javascript"> 
 //<![CDATA[
 addLoadEvent(function() {
-	jQuery("#tabs").tabs();
+	jQuery("#resmantabs").tabs();
 	jQuery(".datepicker").datepicker({dateFormat: 'yy-mm-dd', changeMonth: true, changeYear: true, gotoCurrent: true});
 });
 //]]>
@@ -161,8 +161,8 @@ function resman_edit_resume() {
 	<input type="hidden" name="resmansubmit" value="1" />
 	<div class="wrap">
 		<h2><?php _e('Résumé Manager: Editor', 'resman') ?></h2>
-		<div id="tabs">
-		<ul class="tabs">
+		<div id="resmantabs">
+		<ul class="resmantabs">
 <?php
 	foreach($pages as $page => $title) {
 ?>
