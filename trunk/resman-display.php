@@ -22,7 +22,6 @@ function resman_flush_rewrite_rules() {
 	$wp_rewrite->flush_rules();
 }
 
-
 function resman_display_resume($posts) {
 	global $wp_query, $resman_formats;
 
@@ -41,6 +40,10 @@ function resman_display_resume($posts) {
 		}
 	}
 	return NULL;
+}
+
+function resman_display_init() {
+	wp_enqueue_style('resman-display', RESMAN_URL.'/css/display.css', false, RESMAN_VERSION);
 }
 
 function resman_display_template() {
@@ -486,7 +489,7 @@ function resman_display_resume_html() {
 	$hidepromo = get_option('resman_promo_link');
 	
 	if(!$hidepromo) {
-		$content .= '<p class="alignright"><small>' . sprintf(__('This résumé was created using <a href="%s" title="%s">Résumé Manager</a> for WordPress, by <a href="%s">Gary Pendergast</a>.', 'resman'), 'http://pento.net/projects/wordpress-resume-manager/', __('WordPress Résumé Manager', 'resman'), 'http://pento.net') . '</small></p>';
+		$content .= '<p class="resmanpromo">' . sprintf(__('This résumé was created using <a href="%s" title="%s">Résumé Manager</a> for WordPress, by <a href="%s">Gary Pendergast</a>.', 'resman'), 'http://pento.net/projects/wordpress-resume-manager/', __('WordPress Résumé Manager', 'resman'), 'http://pento.net') . '</p>';
 	}
 	
 	$page->post_content = $content;
