@@ -35,6 +35,9 @@ $resman_formats = array(
 // Load ResMan
 //
 
+// Resman global functions
+require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-functions.php');
+
 // Resman setup (for installation/upgrades)
 require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-setup.php');
 

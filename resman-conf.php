@@ -35,7 +35,6 @@ addLoadEvent(function() {
 }
 
 function resman_conf() {
-	global $resman_formats;
 	if(isset($_POST['resmanconfsubmit'])) {
 		// Configuration form as been submitted. Updated the database.
 		resman_conf_updatedb();
@@ -46,17 +45,27 @@ function resman_conf() {
 	<div class="wrap">
 
 		<h2><?php _e('Résumé Manager: Settings', 'resman') ?></h2>
-		<div id="dashboard-widgets-wrap">
-		<div id='dashboard-widgets' class='metabox-holder'>
-		<div class='postbox-container' style='width:60%;'>
-		<div id='normal-sortables' class='meta-box-sortables'>
-		<div class="meta-box-sortabless">
+<?php
+	$widths = array('60%', '39%');
+	$functions = array(
+					array('resman_print_settings_box', 'resman_print_livedocx_box'),
+					array('resman_print_donate_box', 'resman_print_about_box')
+				);
+	$titles = array(
+				array(__('Settings', 'resman'), __('LiveDocx Authentication', 'resman')),
+				array(__('Donate', 'resman'), __('About This Plugin', 'resman'))
+			);
+	
+	jobman_create_dashboard($widths, $functions, $titles);
+?>
+	</div>
+	</form>
+<?php
+}
 
-		<div id="resman-settings" class="postbox">
-		<div class="handlediv" title="Click to toggle"><br /></div>
-		<h3 class="hndle"><span><?php _e('Settings', 'resman') ?></span></h3>
-		<div class="inside">
-
+function resman_print_settings_box() {
+	global $resman_formats;
+?>
 		<table class="form-table">
 			<tr>
 				<th scope="row"><?php _e('URL path', 'resman') ?></th>
@@ -98,15 +107,11 @@ function resman_conf() {
 			</tr>
 		</table>
 		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Update Settings', 'resman') ?>" /></p>
-		<div class="clear"></div>
+<?php
+}
 
-		</div></div>
-
-		<div id="resman-ldx" class="postbox">
-		<div class="handlediv" title="Click to toggle"><br /></div>
-		<h3 class="hndle"><span><?php _e('LiveDocx Authentication', 'resman') ?></span></h3>
-		<div class="inside">
-
+function resman_print_livedocx_box() {
+?>
 		<p><?php printf(__('Résumé Manager uses the <a href="%1s">LiveDocx</a> service to generate the Plain Text, PDF, Microsoft Word and Rich Text Format versions of your Résumé. In order to use this service, you will need a LiveDocx account. If you don\'t already have one, you can <a href="%2s">register for one here</a>.', 'resman'), 'http://www.livedocx.com/', 'https://www.livedocx.com/user/account_registration.aspx') ?></p>
 		<p><span style="color:#f00; font-weight:bold;"><?php _e('Security Warning', 'resman') ?>:</span> <?php _e('Your LiveDocx username and password will be stored in plain text in your Wordpress database. It is recommended that you use a password different to any you have used elsewhere.', 'resman') ?></p>
 		<table class="form-table">
@@ -120,21 +125,6 @@ function resman_conf() {
 			</tr>
 		</table>
 		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Update Settings', 'resman') ?>" /></p>
-		<div class="clear"></div>
-		
-		</div></div>
-		
-		</div></div></div>
-		<div class='postbox-container' style='width:39%;'>
-		<div id='normal-sortables' class='meta-box-sortables'>
-		<div class="meta-box-sortabless">
-<?php
-	resman_print_info();
-?>
-		</div></div></div>
-		</div></div>
-	</div>
-	</form>
 <?php
 }
 
@@ -601,31 +591,24 @@ function resman_resume_updatedb() {
 	}
 }
 
-function resman_print_info() {
+function resman_print_donate_box() {
 ?>
-<div id="resman_donate" class="postbox">
-	<div class="handlediv" title="Click to toggle"><br /></div>
-	<h3 class="hndle"><span><?php _e('Donate', 'resman') ?></span></h3>
-	<div class="inside">
 		<p><?php _e('If this plugin helps you find a new job, move your career in the direction you want, or simply exposes you to new experiences, I\'d appreciate it if you shared the love, by way of my Donate or Amazon Wish List links below.', 'resman') ?></p>
 		<ul>
 			<li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=gary%40pento%2enet&item_name=WordPress%20Plugin%20(Resume%20Manager)&item_number=Support%20Open%20Source&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8"><?php _e('Donate with PayPal', 'resman') ?></a></li>
 			<li><a href="http://www.amazon.com/wishlist/1ORKI9ZG875BL"><?php _e('My Amazon Wish List', 'resman') ?></a></li>
 		</ul>
-	</div>
-</div>
-<div id="resman_about" class="postbox">
-	<div class="handlediv" title="Click to toggle"><br /></div>
-	<h3 class="hndle"><span><?php _e('About This Plugin', 'resman') ?></span></h3>
-	<div class="inside">
+<?php
+}
+
+function resman_print_about_box() {
+?>
 		<ul>
 			<li><a href="http://pento.net/"><?php _e('Gary Pendergast\'s Blog', 'resman') ?></a></li>
 			<li><a href="http://twitter.com/garypendergast"><?php _e('Follow me on Twitter!', 'resman') ?></a></li>
 			<li><a href="http://pento.net/projects/wordpress-resume-manager/"><?php _e('Plugin Homepage', 'resman') ?></a></li>
-			<li><a href="http://code.google.com/p/wordpress-resume-mananger/issues/list"><?php _e('Submit a Bug/Feature Request', 'resman') ?></a></li>
+			<li><a href="http://code.google.com/p/wordpress-resume-manager/issues/list"><?php _e('Submit a Bug/Feature Request', 'resman') ?></a></li>
 		</ul>
-	</div>
-</div>
 <?php
 }
 ?>
