@@ -189,54 +189,56 @@ function resman_livedocx_write_document($ldx, $format) {
 
 }
 
+$resman_livedocx_up = false;
+$resman_livedocx_error = '';
+
 function resman_livedocx_info() {
+	global $resman_livedocx_up;
 ?>
 	<div class="wrap">
 		<h2><?php _e('LiveDocx Info', 'resman')?></h2>
-		<div id="dashboard-widgets-wrap">
-		<div id='dashboard-widgets' class='metabox-holder'>
-			<div class='postbox-container' style='width:60%;'>
-			<div id='normal-sortables' class='meta-box-sortables'>
-			<div class="meta-box-sortabless">
 <?php
-	$up = resman_livedocx_test_connection();
-?>
-<?php
-	if($up && $_REQUEST['resmanforcecreate']) {
+	$widths = array('60%', '39%');
+	$functions = array(
+					array('resman_print_livedocx_status_box'),
+					array('resman_print_donate_box', 'resman_print_about_box')
+				);
+	$titles = array(
+				array(__('LiveDocx Server Status', 'resman')),
+				array(__('Donate', 'resman'), __('About This Plugin', 'resman'))
+			);
+	
+	resman_livedocx_test_connection();
+
+	if($resman_livedocx_up && $_REQUEST['resmanforcecreate']) {
 		resman_livedocx_create_documents();
 	}
-	if($up) {
-		resman_livedocx_force_create();
-		resman_livedocx_fonts();
+
+	if($resman_livedocx_up) {
+		$functions[0][] = 'resman_livedocx_force_create_box';
+		$titles[0][] = __('Create Résumé Documents', 'jobman');
+		
+		$functions[0][] = 'resman_livedocx_fonts_box';
+		$titles[0][] = __('LoveDocx Fonts', 'jobman');
 	}
+	
+	jobman_create_dashboard($widths, $functions, $titles);
 ?>
-			</div></div></div>
-			<div class='postbox-container' style='width:39%;'>
-			<div id='normal-sortables' class='meta-box-sortables'>
-			<div class="meta-box-sortabless">
-<?php
-	resman_print_info();
-?>
-			</div></div></div>
-		</div></div>
 	</div>
 <?php
 }
 
 function resman_livedocx_test_connection() {
+	global $resman_livedocx_up, $resman_livedocx_error;
+
 	$username = get_option('resman_livedocx_username');
 	$password = get_option('resman_livedocx_password');
 	
 	$ldx = new SoapClient(LIVEDOCX_URL);
 	
-	$up = true;
-	$error = '';
-?>
-<div id="ldx_status" class="postbox">
-	<div class="handlediv" title="Click to toggle"><br /></div>
-	<h3 class="hndle"><span><?php _e('LiveDocx Server Status', 'resman') ?></span></h3>
-	<div class="inside"><p><?php _e('Server Is', 'resman') ?>: 
-<?php
+	$resman_livedocx_up = true;
+	$resman_livedocx_error = '';
+
 	try {
 		$ldx->LogIn(
 				array(
@@ -244,12 +246,25 @@ function resman_livedocx_test_connection() {
 					'password' => $password
 				));
 	} catch (Exception $e) {
-		$error = $e->faultstring;
-		$up = false;
+		$resman_livedocx_error = $e->faultstring;
+		$resman_livedocx_up = false;
 	}
 
+	if($resman_livedocx_up) {
+		$ldx->LogOut();
+	}
+	
+	unset($ldx);
+}
+
+function resman_print_livedocx_status_box() {
+	global $resman_livedocx_up, $resman_livedocx_error;
+?>
+	<p><?php _e('Server Is', 'resman') ?>: 
+<?php
+
 	echo '<strong';
-	if($up) {
+	if($resman_livedocx_up) {
 		echo '>';
 		_e('Up', 'resman');
 	} else {
@@ -258,24 +273,14 @@ function resman_livedocx_test_connection() {
 	}
 	echo '</strong>';
 
-	if(strlen($error)) {
+	if(strlen($resman_livedocx_error)) {
 		echo '<br/>';
-		echo $error;
+		echo $resman_livedocx_error;
 	}
 	
-	if($up) {
-		$ldx->LogOut();
-	}
-	
-	unset($ldx);
-?>
-	</p></div>
-</div>
-<?php
-	return $up;
 }
 
-function resman_livedocx_fonts() {
+function resman_livedocx_fonts_box() {
 	$username = get_option('resman_livedocx_username');
 	$password = get_option('resman_livedocx_password');
 	
@@ -290,10 +295,7 @@ function resman_livedocx_fonts() {
 	$result = $ldx->GetFontNames();
 
 ?>
-<div id="ldx_fonts" class="postbox"> 
-	<div class="handlediv" title="Click to toggle"><br /></div>
-	<h3 class="hndle"><span><?php _e('LiveDocx Fonts', 'resman') ?></span></h3>
-	<div class="inside"><p>
+	<p>
 		<ul>
 <?php
 
@@ -307,28 +309,20 @@ function resman_livedocx_fonts() {
 	}	
 ?>
 		</ul>
-	</p></div>
-</div>
+	</p>
 <?php
 	$ldx->LogOut();
 	
 	unset($ldx);
 }
 
-function resman_livedocx_force_create() {
+function resman_livedocx_force_create_box() {
 ?>
-<form action="" method="post">
-<div id="ldx_forcecreate" class="postbox"> 
-	<div class="handlediv" title="Click to toggle"><br /></div>
-	<h3 class="hndle"><span><?php _e('Create Résumé Documents', 'resman') ?></span></h3>
-	<div class="inside">
+	<form action="" method="post">
 		<input type="hidden" name="resmanforcecreate" value="1" />
-		<p><?php _e('This will force new copies of your Résumé to be created by LiveDocx and cached on your WordPress host.', 'resman') ?></p>
+		<p><?php _e('This will force new copies of your résumé to be created by LiveDocx and cached on your WordPress host.', 'resman') ?></p>
 		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Create Documents', 'resman') ?>" /></p>
-		<div class="clear"></div>
-	</div>
-</div>
-</form>
+	</form>
 <?php
 }
 
