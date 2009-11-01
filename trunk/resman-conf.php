@@ -522,7 +522,7 @@ function resman_conf_updatedb() {
 		update_option('resman_promo_link', 1);
 	}
 	else {
-		update_option('resman_link', 0);
+		update_option('resman_promo_link', 0);
 	}
 	
 	update_option('resman_livedocx_username', $_POST['livedocx-username']);
