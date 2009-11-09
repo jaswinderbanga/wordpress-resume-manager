@@ -6,7 +6,8 @@ function resman_hresume_update() {
 	$url = get_option('jobman_hresume_path');
 
 	if($url == '') {
-		return;
+
+	return;
 	}
 	
 	// Set our User-Agent string, so whoever we're scraping knows it's us.
@@ -27,7 +28,7 @@ function resman_hresume_update() {
 	if(preg_match('@^https?://[^.]*\.linkedin.com@', $url)) {
 		$resume = resman_hresume_parse_linkedin($data[0]);
 	}
-	else if(preg_match('@^https?://(www.)?xing.com@', $url)) {
+	else if(preg_match('@^https?://[^.]*\.xing.com@', $url)) {
 		$resume = resman_hresume_parse_xing($data[0]);
 	}
 	else {
@@ -82,13 +83,62 @@ function resman_hresume_parse_linkedin($hresume) {
 	}
 	
 	$resume['skills'] = array(
-							other	=> $hresume->find('#summary .skills', 0)->plaintext
+							'other'	=> $hresume->find('#summary .skills', 0)->plaintext
 						);
 	
 	return $resume;
 }
 
 function resman_hresume_parse_xing($hresume) {
+	$resume = array();
+	
+	$resume['personal'] = array(
+							'name'		=> $hresume->find('#address-container .name',0)->plaintext,
+							'address'	=> $hresume->find('#photobox-city', 0)->plaintext . ', ' . $hresume->find('#photobox-country', 0)->plaintext
+						);
+	
+	$resume['general'] = array(
+							'occupation'	=> $hresume->find('#photobox-title', 0)->plaintext,
+							'abstract'		=> $hresume->find('.col_two .clr .fl', 0)->plaintext
+						);
+
+	$experience = $hresume->find('.experience');
+	
+	$resume['experience'] = array();
+	$ii = 0;
+	foreach($experience as $exp) {
+		$resume['experience'][$ii] = array(
+										'start'		=> $exp->find('.dtstart', 0)->plaintext,
+										'end'		=> $exp->find('.dtend', 0)->plaintext,
+										'title'		=> $exp->find('.title', 0)->plaintext,
+										'name'		=> $exp->find('.org', 0)->plaintext
+									);
+		$ii++;
+	}
+	
+	$education = $hresume->find('.education');
+	
+	$resume['education'] = array();
+	$ii = 0;
+	foreach($education as $edu) {
+		$resume['education'][$ii] = array(
+										'start'		=> $edu->find('.dtstart', 0)->plaintext,
+										'end'		=> $edu->find('.dtend', 0)->plaintext,
+										'title'		=> $edu->find('.edu-department', 0)->plaintext,
+										'abstract'	=> $edu->find('.edu-notes', 0)->plaintext,
+										'name'		=> $edu->find('.edu-school .location', 0)->plaintext
+									);
+		$ii++;
+	}
+	
+	$resume['skills'] = array();
+	$other = array();
+	foreach($hresume->find('.profile-col-content .skill') as $skill) {
+		$other[] = $skill->plaintext;
+	}
+	$resume['skills']['other'] = implode(', ', $other);
+	
+	return $resume;
 }
 
 function resman_hresume_parse_other($hresume) {
