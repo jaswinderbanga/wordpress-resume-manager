@@ -161,4 +161,20 @@ function resman_create_db() {
 function resman_upgrade_db($oldversion) {
 }
 
+function resman_drop_db() {
+	global $wpdb;
+	
+	$tables = array(
+				$wpdb->prefix . 'resman_repeated_groups',
+				$wpdb->prefix . 'resman_fields',
+				$wpdb->prefix . 'resman_field_options',
+				$wpdb->prefix . 'resman_data'
+			);
+			
+	foreach($tables as $table) {
+		$sql = 'DROP TABLE IF EXISTS ' . $table;
+		$wpdb->query($sql);
+	}
+}
+
 ?>
