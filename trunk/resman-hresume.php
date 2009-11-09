@@ -3,8 +3,6 @@
 require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/lib/simple_html_dom.php');
 
 function resman_hresume_update() {
-	global $wpdb;
-	
 	$url = get_option('jobman_hresume_path');
 
 	if($url == '') {
@@ -26,9 +24,78 @@ function resman_hresume_update() {
 		return;
 	}
 	
-	$hresume = $data[0];
+	if(preg_match('@^https?://[^.]*\.linkedin.com@', $url)) {
+		$resume = resman_hresume_parse_linkedin($data[0]);
+	}
+	else if(preg_match('@^https?://(www.)?xing.com@', $url)) {
+		$resume = resman_hresume_parse_xing($data[0]);
+	}
+	else {
+		$resume = resman_hresume_parse_other($data[0]);
+	}
+
+	resman_hresume_update_db($resume);
+}
+
+function resman_hresume_parse_linkedin($hresume) {
+	$resume = array();
+
+	$resume['personal'] = array(
+							'name'		=> $hresume->find('#name',0)->plaintext,
+							'address'	=> $hresume->find('.contact .adr', 0)->plaintext
+						);
 	
-	echo $hresume;
+	$resume['general'] = array(
+							'occupation'	=> $hresume->find('.contact .title', 0)->plaintext,
+							'abstract'		=> $hresume->find('#summary .summary', 0)->plaintext
+						);
+
+	$experience = $hresume->find('#experience .experience');
+	
+	$resume['experience'] = array();
+	$ii = 0;
+	foreach($experience as $exp) {
+		$resume['experience'][$ii] = array(
+										'start'		=> $exp->find('.dtstart', 0)->title,
+										'end'		=> $exp->find('.dtend', 0)->title,
+										'title'		=> $exp->find('.title', 0)->plaintext,
+										'abstract'	=> $exp->find('.description', 0)->plaintext,
+										'name'		=> $exp->find('.org', 0)->plaintext,
+										'sector'	=> $exp->find('.organization-details', 0)->plaintext
+									);
+		$ii++;
+	}
+	
+	$education = $hresume->find('#education .education');
+	
+	$resume['education'] = array();
+	$ii = 0;
+	foreach($education as $edu) {
+		$resume['education'][$ii] = array(
+										'start'		=> $edu->find('.dtstart', 0)->title,
+										'end'		=> $edu->find('.dtend', 0)->title,
+										'title'		=> $edu->find('.degree', 0)->plaintext,
+										'abstract'	=> $edu->find('.notes', 0)->plaintext,
+										'name'		=> $edu->find('.org', 0)->plaintext
+									);
+		$ii++;
+	}
+	
+	$resume['skills'] = array(
+							other	=> $hresume->find('#summary .skills', 0)->plaintext
+						);
+	
+	return $resume;
+}
+
+function resman_hresume_parse_xing($hresume) {
+}
+
+function resman_hresume_parse_other($hresume) {
+}
+
+function resman_hresume_update_db($resume) {
+	global $wpdb;
 }
 
 ?>
