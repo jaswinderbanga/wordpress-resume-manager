@@ -199,13 +199,13 @@ function resman_display_resume_html() {
 			$display_data[$item['name']] = $item['value'];
 		}
 		
-		$content .= '<div class="summary">';
+		$content .= '<div>';
 		
 		if(isset($display_data['occupation'])) {
 			$content .= '<strong>' . __('Desired Occupation', 'resman') . ':</strong> ' . $display_data['occupation'];
 		}
 		if(isset($display_data['abstract'])) {
-			$content .= '<p>' . resman_format_abstract($display_data['abstract']) . '</p>';
+			$content .= '<p class="summary">' . resman_format_abstract($display_data['abstract']) . '</p>';
 		}
 		
 		$content .= '</div>';
@@ -314,7 +314,7 @@ function resman_display_resume_html() {
 				$content .= ' – ';
 			}
 			if(isset($item['name'])) {
-				$content .= '<span class="location">' . $item['name'] . '</span>';
+				$content .= '<span class="location org">' . $item['name'] . '</span>';
 			}
 			if(isset($item['name']) && isset($item['field'])) {
 				$content .= ' – ';
