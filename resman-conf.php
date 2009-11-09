@@ -5,6 +5,7 @@ function resman_admin_setup() {
 	$file = WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php';
 	add_menu_page(__('Résumé Mgr', 'resman'), __('Résumé Mgr', 'resman'), 'manage_options', $file, 'resman_conf');
 	add_submenu_page($file, __('Résumé Manager', 'resman'), __('Settings', 'resman'), 'manage_options', $file, 'resman_conf');
+	add_submenu_page($file, __('Résumé Manager', 'resman'), __('Sync Résumé', 'resman'), 'manage_options', 'resman-sync-resume', 'resman_sync_resume');
 	$pageref = add_submenu_page($file, __('Résumé Manager', 'resman'), __('Edit Résumé', 'resman'), 'manage_options', 'resman-edit-resume', 'resman_edit_resume');
 	add_submenu_page($file, __('Résumé Manager', 'resman'), __('LiveDocx Info', 'resman'), 'manage_options', 'resman-livedocx-info', 'resman_livedocx_info');
 	

@@ -22,4 +22,16 @@ add_action('template_redirect', 'resman_display_template');
 add_filter('wp_title', 'resman_display_title', 10, 3);
 // Set the edit post link
 add_filter('get_edit_post_link', 'resman_display_edit_post_link');
+
+// Create a hook for scheduling resume syncing
+add_action('resman_sync', 'resman_sync_callback');
+
+// Deactivate hook
+register_deactivation_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php', 'resman_deactive');
+
+// Uninstall function
+if (function_exists('register_uninstall_hook')) {
+	register_uninstall_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php', 'resman_uninstall');
+}
+
 ?>

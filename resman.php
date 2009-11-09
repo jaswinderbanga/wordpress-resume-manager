@@ -1,7 +1,7 @@
 <?php //encoding: utf-8
 /*
 Plugin Name: Résumé Manager
-Plugin URI: http://code.google.com/p/wordpress-resume-mananger/
+Plugin URI: http://pento.net/projects/wordpress-resume-mananger-plugin/
 Description: A résumé management plugin for Wordpress. This plugin requires both the <a href="http://www.php.net/soap">PHP SOAP Extension</a> and the <a href="http://php.net/manual/en/book.openssl.php">PHP OpenSSL Extension</a> to be enabled for full functionalitys.
 Version: 0.1
 Author: Gary Pendergast
@@ -47,8 +47,16 @@ require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-db.php');
 // Resman LiveDocx functions
 require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-livedocx.php');
 
-// Resman admin
-require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-conf.php');
+if(is_admin()) {
+	// Resman admin
+	require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-conf.php');
+
+	// Resman sync
+	require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-sync.php');
+
+	// Resman hResume support
+	require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-hresume.php');
+}
 
 // Resman frontend
 require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman-display.php');

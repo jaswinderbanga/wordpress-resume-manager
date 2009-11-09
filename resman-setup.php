@@ -7,6 +7,7 @@ function resman_activate() {
 	if($dbversion == '') {
 		// Never been run, create the database.
 		resman_create_db();
+		resman_create_default_settings();
 	}
 	elseif($dbversion != RESMAN_DB_VERSION) {
 		// New version, upgrade
@@ -17,4 +18,17 @@ function resman_activate() {
 	update_option('resman_dbversion', RESMAN_DB_VERSION);
 }
 
+function resman_create_default_settings() {
+}
+
+function resman_deactive() {
+	wp_clear_scheduled_hook('resman_sync');
+}
+
+function resman_uninstall() {
+	delete_option('resman_version');
+	delete_option('resman_dbversion');
+
+	resman_drop_db();
+}
 ?>
