@@ -142,6 +142,59 @@ function resman_hresume_parse_xing($hresume) {
 }
 
 function resman_hresume_parse_other($hresume) {
+	$resume = array();
+
+	$resume['personal'] = array(
+							'dob'		=> $hresume->find('.contact dob',0)->plaintext,
+							'name'		=> $hresume->find('.contact .n',0)->plaintext,
+							'address'	=> $hresume->find('.contact .adr', 0)->plaintext,
+							'phone'		=> $hresume->find('.contact .tel .pref',0)->plaintext,
+							'mobile'	=> $hresume->find('.contact .tel .cell',0)->plaintext,
+							'fax'		=> $hresume->find('.contact .tel .fax',0)->plaintext,
+							'email'		=> $hresume->find('.contact .email',0)->plaintext
+						);
+	
+	$resume['general'] = array(
+							'abstract'		=> $hresume->find('.summary', 0)->plaintext
+						);
+
+	$experience = $hresume->find('.experience');
+	
+	$resume['experience'] = array();
+	$ii = 0;
+	foreach($experience as $exp) {
+		$resume['experience'][$ii] = array(
+										'start'		=> $exp->find('.dtstart', 0)->plaintext,
+										'end'		=> $exp->find('.dtend', 0)->plaintext,
+										'title'		=> $exp->find('.summary', 0)->plaintext,
+										'abstract'	=> $exp->find('.description', 0)->plaintext,
+										'name'		=> $exp->find('.org', 0)->plaintext,
+										'address'	=> $exp->find('.addr', 0)->plaintext,
+									);
+		$ii++;
+	}
+	
+	$education = $hresume->find('.education');
+	
+	$resume['education'] = array();
+	$ii = 0;
+	foreach($education as $edu) {
+		$resume['education'][$ii] = array(
+										'start'		=> $edu->find('.dtstart', 0)->plaintext,
+										'end'		=> $edu->find('.dtend', 0)->plaintext,
+										'title'		=> $edu->find('.summary', 0)->plaintext,
+										'abstract'	=> $edu->find('.description', 0)->plaintext,
+										'name'		=> $edu->find('.org', 0)->plaintext
+										'address'	=> $edu->find('.addr', 0)->plaintext
+									);
+		$ii++;
+	}
+	
+	$resume['skills'] = array(
+							'other'	=> $hresume->find('.skills', 0)->plaintext
+						);
+	
+	return $resume;
 }
 
 function resman_hresume_update_db($resume) {
