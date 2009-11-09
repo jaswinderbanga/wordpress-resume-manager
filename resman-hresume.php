@@ -42,7 +42,7 @@ function resman_hresume_parse_linkedin($hresume) {
 	$resume = array();
 
 	$resume['personal'] = array(
-							'name'		=> $hresume->find('#name',0)->plaintext,
+							'name'		=> $hresume->find('#name', 0)->plaintext,
 							'address'	=> $hresume->find('.contact .adr', 0)->plaintext
 						);
 	
@@ -93,7 +93,7 @@ function resman_hresume_parse_xing($hresume) {
 	$resume = array();
 	
 	$resume['personal'] = array(
-							'name'		=> $hresume->find('#address-container .name',0)->plaintext,
+							'name'		=> $hresume->find('#address-container .name', 0)->plaintext,
 							'address'	=> $hresume->find('#photobox-city', 0)->plaintext . ', ' . $hresume->find('#photobox-country', 0)->plaintext
 						);
 	
@@ -145,8 +145,8 @@ function resman_hresume_parse_other($hresume) {
 	$resume = array();
 
 	$resume['personal'] = array(
-							'dob'		=> $hresume->find('.contact dob',0)->plaintext,
-							'name'		=> $hresume->find('.contact .n',0)->plaintext,
+							'dob'		=> $hresume->find('.contact dob', 0)->plaintext,
+							'name'		=> $hresume->find('.contact .n', 0)->plaintext,
 							'address'	=> $hresume->find('.contact .adr', 0)->plaintext,
 							'phone'		=> $hresume->find('.contact .tel .pref',0)->plaintext,
 							'mobile'	=> $hresume->find('.contact .tel .cell',0)->plaintext,
@@ -184,7 +184,7 @@ function resman_hresume_parse_other($hresume) {
 										'end'		=> $edu->find('.dtend', 0)->plaintext,
 										'title'		=> $edu->find('.summary', 0)->plaintext,
 										'abstract'	=> $edu->find('.description', 0)->plaintext,
-										'name'		=> $edu->find('.org', 0)->plaintext
+										'name'		=> $edu->find('.org', 0)->plaintext,
 										'address'	=> $edu->find('.addr', 0)->plaintext
 									);
 		$ii++;
