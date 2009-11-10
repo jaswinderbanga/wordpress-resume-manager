@@ -113,7 +113,7 @@ function resman_print_settings_box() {
 
 function resman_print_livedocx_box() {
 ?>
-		<p><?php printf(__('Résumé Manager uses the <a href="%1s">LiveDocx</a> service to generate the Plain Text, PDF, Microsoft Word and Rich Text Format versions of your Résumé. In order to use this service, you will need a LiveDocx account. If you don\'t already have one, you can <a href="%2s">register for one here</a>.', 'resman'), 'http://www.livedocx.com/', 'https://www.livedocx.com/user/account_registration.aspx') ?></p>
+		<p><?php printf(__('Résumé Manager uses the <a href="%1s">LiveDocx</a> service to generate the Plain Text, PDF, Microsoft Word and Rich Text Format versions of your Résumé. In order to use this service, you will need a LiveDocx account. If you don\'t already have one, you can <a href="%2s"><strong>register for one here</strong></a>.', 'resman'), 'http://www.livedocx.com/', 'https://www.livedocx.com/user/account_registration.aspx') ?></p>
 		<p><span style="color:#f00; font-weight:bold;"><?php _e('Security Warning', 'resman') ?>:</span> <?php _e('Your LiveDocx username and password will be stored in plain text in your Wordpress database. It is recommended that you use a password different to any you have used elsewhere.', 'resman') ?></p>
 		<table class="form-table">
 			<tr>
