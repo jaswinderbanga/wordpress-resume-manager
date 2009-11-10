@@ -43,7 +43,7 @@ function resman_sync_hresume_box() {
 		<table class="form-table">
 			<tr>
 				<th scope="row"><?php _e('URL path', 'resman') ?></th>
-				<td><input class="regular-text code" type="text" name="hresume-path" value="<?php echo get_option('jobman_hresume_path') ?>" /></td>
+				<td><input class="regular-text code" type="text" name="hresume-path" value="<?php echo get_option('resman_hresume_path') ?>" /></td>
 				<td><span class="description"><?php _e('Enter the URL you want the Résumé Manager to use for importing the hResume information.', 'resman') ?></span></td>
 			</tr>
 			<tr>
@@ -59,7 +59,7 @@ function resman_sync_hresume_box() {
 			</tr>
 		</table>
 		
-		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Update hResume Settings', 'jobman') ?>" /></p>
+		<p class="submit"><input type="submit" name="submit"  class="button-primary" value="<?php _e('Update hResume Settings', 'resman') ?>" /></p>
 		</form>
 <?php
 }
@@ -67,8 +67,8 @@ function resman_sync_hresume_box() {
 function resman_sync_update_settings() {
 	wp_clear_scheduled_hook('resman_sync');
 
-	update_option('jobman_hresume_path', $_POST['hresume-path']);
-	update_option('jobman_sync_frequency', $_POST['sync-frequency']);
+	update_option('resman_hresume_path', $_POST['hresume-path']);
+	update_option('resman_sync_frequency', $_POST['sync-frequency']);
 	
 	resman_sync_callback();
 	
