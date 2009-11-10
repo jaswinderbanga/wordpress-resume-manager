@@ -1,6 +1,10 @@
 <?php //encoding: utf-8
 function resman_queryvars($qvars) {
-	$qvars[] = 'resman';
+	$url = get_option('resman_page_name');
+	if(!$url) {
+		return;
+	}
+	$qvars[] = $url;
 	return $qvars;
 }
 
@@ -10,8 +14,8 @@ function resman_add_rewrite_rules($wp_rewrite) {
 		return;
 	}
 	$new_rules = array( 
-						"$url/?$" => "index.php?resman=$url.html",
-						"$url/(.+)" => 'index.php?resman=' .
+						"$url/?$" => "index.php?$url=html",
+						"$url/$url\.(.+)" => "index.php?$url=" .
 						$wp_rewrite->preg_index(1) );
 
 	$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
@@ -25,17 +29,18 @@ function resman_flush_rewrite_rules() {
 function resman_display_resume($posts) {
 	global $wp_query, $resman_formats;
 
-	if(!isset($wp_query->query_vars['resman'])) {
+	$url = get_option('resman_page_name');
+
+	if(!isset($wp_query->query_vars[$url])) {
 		return $posts;
 	}
 	
-	$url = get_option('resman_page_name');
-	if($wp_query->query_vars['resman'] == "$url.html") {
+	if($wp_query->query_vars[$url] == "html") {
 		return resman_display_resume_html();
 	}
 	
 	foreach($resman_formats as $type => $format) {
-		if($wp_query->query_vars['resman'] == $url . '.' . $format[0]) {
+		if($wp_query->query_vars[$url] == $format[0]) {
 			resman_display_resume_file($type);
 		}
 	}
@@ -51,7 +56,7 @@ function resman_display_template() {
 	
 	$url = get_option('resman_page_name');
 	
-	if(isset($wp_query->query_vars['resman']) && $wp_query->query_vars['resman'] = "$url.html") {
+	if(isset($wp_query->query_vars[$url]) && $wp_query->query_vars[$url] = 'html') {
 		include(TEMPLATEPATH . '/page.php');
 		exit;
 	}
@@ -62,7 +67,7 @@ function resman_display_title($title, $sep, $seploc) {
 	
 	$url = get_option('resman_page_name');
 	
-	if(isset($wp_query->query_vars['resman']) && $wp_query->query_vars['resman'] = "$url.html") {
+	if(isset($wp_query->query_vars[$url]) && $wp_query->query_vars[$url] = 'html') {
 		if($seploc == 'right') {
 			$title = __('Résumé', 'resman') . " $sep ";
 		}
@@ -79,7 +84,7 @@ function resman_display_edit_post_link($link) {
 	
 	$url = get_option('resman_page_name');
 	
-	if(isset($wp_query->query_vars['resman']) && $wp_query->query_vars['resman'] = "$url.html") {
+	if(isset($wp_query->query_vars[$url]) && $wp_query->query_vars[$url] = 'html') {
 		return admin_url('admin.php?page=resman-edit-resume');
 	}
 	
@@ -117,7 +122,7 @@ function resman_display_resume_html() {
 		$content .= '<ul>';
 		foreach($resman_formats as $label => $format) {
 			if(get_option('resman_output_'.$label)) {
-				$content .= '<li><a href="' . get_option('siteurl') . '/' . $url . '/' . $url . '.' . $format[0] . '">' . $url . '.' . $format[0] . '</a> - ' . __($format[1], 'resman') . '</li>';
+				$content .= '<li><a href="' . resman_url($format[0]) . '">' . $url . '.' . $format[0] . '</a> - ' . __($format[1], 'resman') . '</li>';
 			}
 		}
 		$content .= '</ul>';

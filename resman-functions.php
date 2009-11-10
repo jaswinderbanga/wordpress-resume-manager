@@ -42,4 +42,22 @@ function jobman_create_widget($function, $title) {
 				</div>
 <?php
 }
+
+function resman_url($type = 'html') {
+	$structure = get_option('permalink_structure');
+	$url = get_option('resman_page_name');
+	
+	if($structure == '') {
+		$return = get_option('home') . '?' . $url . '=' . $type;
+	}
+	else {
+		$return = get_option('home') . '/' . $url . '/';
+		if($type != 'html' && $type != '') {
+			$return .=  $url . '.' . $type;
+		}
+	}
+
+	return $return;
+}
+
 ?>
