@@ -12,7 +12,7 @@ function resman_livedocx_create_documents() {
 		$dateformat = 'Y-m-d';
 	}
 	
-	$ldx = new SoapClient(LIVEDOCX_URL);
+	$ldx = new SoapClient(LIVEDOCX_URL, array('user_agent' => 'Wordpress-Resume-Manager/' . RESMAN_VERSION . ' http://pento.net/projects/wordpress-resume-mananger-plugin/'));
 	
 	$ldx->LogIn(
 			array(
@@ -234,7 +234,7 @@ function resman_livedocx_test_connection() {
 	$username = get_option('resman_livedocx_username');
 	$password = get_option('resman_livedocx_password');
 	
-	$ldx = new SoapClient(LIVEDOCX_URL);
+	$ldx = new SoapClient(LIVEDOCX_URL, array('user_agent' => 'Wordpress-Resume-Manager/' . RESMAN_VERSION . ' http://pento.net/projects/wordpress-resume-mananger-plugin/'));
 	
 	$resman_livedocx_up = true;
 	$resman_livedocx_error = '';
@@ -284,7 +284,7 @@ function resman_livedocx_fonts_box() {
 	$username = get_option('resman_livedocx_username');
 	$password = get_option('resman_livedocx_password');
 	
-	$ldx = new SoapClient(LIVEDOCX_URL);
+	$ldx = new SoapClient(LIVEDOCX_URL, array('user_agent' => 'Wordpress-Resume-Manager/' . RESMAN_VERSION . ' http://pento.net/projects/wordpress-resume-mananger-plugin/'));
 
 	$ldx->LogIn(
 			array(
