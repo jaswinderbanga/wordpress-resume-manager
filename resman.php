@@ -24,11 +24,11 @@ ini_set('soap.wsdl_cache_enabled', 0);
 $resman_formats = array(
 					'txt' => array('txt', 'Plain text', 'text/plain'),
 					'pdf' => array('pdf', 'PDF', 'application/pdf'),
-					'odt' => array('odt', 'ODT - OpenOffice.org', 'application/vnd.oasis.opendocument.text'),
+					// 'odt' => array('odt', 'ODT - OpenOffice.org', 'application/vnd.oasis.opendocument.text'),
 					'doc' => array('doc', 'Microsoft Word 95-2000', 'application/msword'),
 					'docx' => array('docx', 'Microsoft Word 2003-2007', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'),
-					'rtf' => array('rtf', 'Rich Text Format', 'application/rtf'),
-					'europass' => array('xml', 'Europass CV', 'text/xml')
+					'rtf' => array('rtf', 'Rich Text Format', 'application/rtf')
+					// 'europass' => array('xml', 'Europass CV', 'text/xml')
 				);
 
 //

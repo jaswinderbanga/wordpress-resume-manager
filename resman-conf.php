@@ -91,11 +91,11 @@ function resman_print_settings_box() {
 				</td>
 				<td><span class="description"><?php _e('Select which formats you want your résumé to be available in.', 'resman') ?></span></td>
 			</tr>
-			<tr>
+			<!-- <tr>
 				<th scope="row"><?php _e('Enable Europass Web Service?', 'resman') ?></th>
 				<td><input type="checkbox" value="1" name="service-europass" <?php echo (get_option('resman_service_europass'))?('checked="checked" '):('') ?>/></td>
 				<td><span class="description"><?php _e('Do you want to have your blog act as a Europass server?', 'resman') ?></span></td>
-			</tr>
+			</tr> -->
 			<tr>
 				<th scope="row"><?php _e('Show References on Public résumé?', 'resman') ?></th>
 				<td><input type="checkbox" value="1" name="show-references" <?php echo (get_option('resman_show_references'))?('checked="checked" '):('') ?>/></td>
@@ -505,12 +505,12 @@ function resman_conf_updatedb() {
 		}
 	}
 
-	if($_POST['service-europass']) {
+	/*if($_POST['service-europass']) {
 		update_option('resman_service_europass', 1);
 	}
 	else {
 		update_option('resman_service_europass', 0);
-	}
+	}*/
 
 	if($_POST['show-references']) {
 		update_option('resman_show_references', 1);
