@@ -199,6 +199,28 @@ function resman_hresume_parse_other($hresume) {
 
 function resman_hresume_update_db($resume) {
 	global $wpdb;
+	
+	$sql = 'DELETE FROM  ' . $wpdb->prefix . 'resman_data WHERE 1';
+	$wpdb->query($sql);
+	
+	foreach($resume as $section => $data) {
+		if($section == 'experience' || $section == 'education') {
+			foreach($data as $repeatgroup => $item) {
+				foreach($item as $name => $value) {
+					$sql = $wpdb->prepare('INSERT INTO ' . $wpdb->prefix . 'resman_data(fieldid, repeatgroup_count, value) VALUES((SELECT id FROM ' . $wpdb->prefix . 'resman_fields WHERE name=%s AND section=%s LIMIT 1), %d, %s);',
+											$name, $section, $repeatgroup, $value);
+					$wpdb->query($sql);
+				}
+			}
+		}
+		else {
+			foreach($data as $name => $value) {
+				$sql = $wpdb->prepare('INSERT INTO ' . $wpdb->prefix . 'resman_data(fieldid, repeatgroup_count, value) VALUES((SELECT id FROM ' . $wpdb->prefix . 'resman_fields WHERE name=%s AND section=%s LIMIT 1), -1, %s);',
+										$name, $section, $value);
+				$wpdb->query($sql);
+			}
+		}
+	}
 }
 
 ?>
