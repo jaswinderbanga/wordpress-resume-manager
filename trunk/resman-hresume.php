@@ -3,7 +3,7 @@
 require_once(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/lib/simple_html_dom.php');
 
 function resman_hresume_update() {
-	$url = get_option('jobman_hresume_path');
+	$url = get_option('resman_hresume_path');
 
 	if($url == '') {
 
