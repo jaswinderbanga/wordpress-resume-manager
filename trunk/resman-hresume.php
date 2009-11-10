@@ -36,6 +36,8 @@ function resman_hresume_update() {
 	}
 
 	resman_hresume_update_db($resume);
+	
+	resman_livedocx_create_documents();
 }
 
 function resman_hresume_parse_linkedin($hresume) {
