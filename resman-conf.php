@@ -2,7 +2,7 @@
 
 function resman_admin_setup() {
 	// Setup the admin menu item
-	$file = WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php';
+	$file = WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resume-manager.php';
 	add_menu_page(__('Résumé Mgr', 'resman'), __('Résumé Mgr', 'resman'), 'manage_options', $file, 'resman_conf');
 	add_submenu_page($file, __('Résumé Manager', 'resman'), __('Settings', 'resman'), 'manage_options', $file, 'resman_conf');
 	add_submenu_page($file, __('Résumé Manager', 'resman'), __('Sync Résumé', 'resman'), 'manage_options', 'resman-sync-resume', 'resman_sync_resume');

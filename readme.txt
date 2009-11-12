@@ -3,8 +3,8 @@ Contributors: pento
 Donate link: http://pento.net/donate/
 Tags: resume, manager, list, cv, curriculum, vitae, hresume, microformat, linkedin, xing, europass, europasscv
 Requires at least: 2.7
-Tested up to: 2.8.5
-Stable tag: 0.1.0
+Tested up to: 2.8.6
+Stable tag: trunk
 
 A résumé management plugin for Wordpress. Supports importing from all hResume sources, such as LinkedIn and Xing.
 

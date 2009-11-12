@@ -1,7 +1,7 @@
 <?php //encoding: utf-8
 
 // Hooks for initial setup
-register_activation_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php', 'resman_activate');
+register_activation_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resume-manager.php', 'resman_activate');
 
 // Admin menu
 add_action('admin_menu', 'resman_admin_setup');
@@ -27,11 +27,11 @@ add_filter('get_edit_post_link', 'resman_display_edit_post_link');
 add_action('resman_sync', 'resman_sync_callback');
 
 // Deactivate hook
-register_deactivation_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php', 'resman_deactive');
+register_deactivation_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resume-manager.php', 'resman_deactive');
 
 // Uninstall function
 if (function_exists('register_uninstall_hook')) {
-	register_uninstall_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resman.php', 'resman_uninstall');
+	register_uninstall_hook(WP_PLUGIN_DIR.'/'.RESMAN_FOLDER.'/resume-manager.php', 'resman_uninstall');
 }
 
 ?>
